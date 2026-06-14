@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../services/api_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'skill_gap_screen.dart';
 
 class CourseRecommendationScreen extends StatefulWidget {
   const CourseRecommendationScreen({super.key});
@@ -74,15 +75,107 @@ class _CourseRecommendationScreenState extends State<CourseRecommendationScreen>
         ),
       ),
       body: _loading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+              ),
+            )
           : _errorMsg.isNotEmpty
               ? Center(
-                  child: Padding(
-                    padding: EdgeInsets.all(24),
-                    child: Text(
-                      _errorMsg,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.black54, fontSize: 15),
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.all(24.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF1F1B3A),
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black26,
+                                blurRadius: 10,
+                                offset: const Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          child: Icon(
+                            _errorMsg.contains('No skill gaps')
+                                ? Icons.analytics_outlined
+                                : Icons.wifi_off_rounded,
+                            size: 64,
+                            color: Colors.deepPurpleAccent[100],
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+                        Text(
+                          _errorMsg,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        Text(
+                          _errorMsg.contains('No skill gaps')
+                              ? 'We need to know your skill gaps before recommending tailored courses.'
+                              : 'We couldn\'t connect to our servers. Please check your internet connection and try again.',
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            color: Colors.white70,
+                            fontSize: 14,
+                          ),
+                        ),
+                        const SizedBox(height: 32),
+                        ElevatedButton.icon(
+                          onPressed: () {
+                            if (_errorMsg.contains('No skill gaps')) {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => SkillGapScreen(),
+                                ),
+                              );
+                            } else {
+                              setState(() {
+                                _loading = true;
+                                _errorMsg = '';
+                              });
+                              _loadCourses();
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFFE4D6FF),
+                            foregroundColor: const Color(0xFF4B0082),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 24,
+                              vertical: 12,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            elevation: 4,
+                          ),
+                          icon: Icon(
+                            _errorMsg.contains('No skill gaps')
+                                ? Icons.arrow_forward
+                                : Icons.refresh,
+                          ),
+                          label: Text(
+                            _errorMsg.contains('No skill gaps')
+                                ? 'Go to Skill Gap Analysis'
+                                : 'Try Again',
+                            style: const TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 )
