@@ -5,13 +5,13 @@ echo "🔧 Configuring Git safety permissions..."
 git config --global --add safe.directory /vercel/path0/flutter
 git config --global --add safe.directory "$PWD"
 
-# 2. Download a newer Flutter SDK supporting Dart ^3.8.1
-echo "📥 Downloading updated Flutter SDK..."
-curl -O https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.27.0-stable.tar.xz
+# 2. Download the exact required Flutter SDK version (3.44.2)
+echo "📥 Downloading matching Flutter SDK (3.44.2)..."
+curl -O https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.44.2-stable.tar.xz
 
 # 3. Extract the downloaded package safely
 echo "📦 Extracting Flutter..."
-tar xf flutter_linux_3.27.0-stable.tar.xz
+tar xf flutter_linux_3.44.2-stable.tar.xz
 
 # 4. Add Flutter to the execution path environment
 export PATH="$PATH:`pwd`/flutter/bin"
