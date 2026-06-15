@@ -15,7 +15,6 @@ class _CourseRecommendationScreenState extends State<CourseRecommendationScreen>
   List _courses = [];
   bool _loading = true;
   String _errorMsg = '';
-  String _selectedProvider = 'All';
 
   @override
   void initState() {
@@ -23,15 +22,6 @@ class _CourseRecommendationScreenState extends State<CourseRecommendationScreen>
     _loadCourses();
   }
 
-  List get _filteredCourses {
-    if (_selectedProvider == 'All') return _courses;
-    return _courses
-        .where((c) => (c['provider'] ?? '')
-            .toString()
-            .toLowerCase()
-            .contains(_selectedProvider.toLowerCase()))
-        .toList();
-  }
 
   Future _loadCourses() async {
     try {
@@ -210,36 +200,12 @@ class _CourseRecommendationScreenState extends State<CourseRecommendationScreen>
                           "These courses can help you fill the skill gaps for your dream job:",
                           style: TextStyle(fontSize: 16, color: Colors.black54),
                         ),
-                        const SizedBox(height: 12),
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: ['All', 'Udemy', 'Coursera', 'YouTube']
-                                .map((provider) => Padding(
-                                      padding: const EdgeInsets.only(right: 8),
-                                      child: FilterChip(
-                                        label: Text(provider, style: const TextStyle(fontSize: 12)),
-                                        selected: _selectedProvider == provider,
-                                        selectedColor: const Color(0xFFE4D6FF),
-                                        checkmarkColor: const Color(0xFF4B0082),
-                                        labelStyle: TextStyle(
-                                          color: _selectedProvider == provider
-                                              ? const Color(0xFF4B0082)
-                                              : Colors.black87,
-                                        ),
-                                        onSelected: (_) =>
-                                            setState(() => _selectedProvider = provider),
-                                      ),
-                                    ))
-                                .toList(),
-                          ),
-                        ),
                         const SizedBox(height: 16),
                         Expanded(
                           child: ListView.builder(
-                            itemCount: _filteredCourses.length,
+                            itemCount: _courses.length,
                             itemBuilder: (context, index) {
-                              final course = _filteredCourses[index];
+                              final course = _courses[index];
                               return Padding(
                                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                                 child: ListTile(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../utils/validators.dart';
 import 'user_store.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -105,12 +106,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       },
                     ),
                   ),
-                  validator: (v) {
-                    if (v == null || v.length < 6) {
-                      return "Min 6 characters";
-                    }
-                    return null;
-                  },
+                  validator: Validators.validatePassword,
                 ),
 
                 SizedBox(height: 16),

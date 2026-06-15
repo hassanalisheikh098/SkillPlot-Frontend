@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../utils/validators.dart';
 import 'user_store.dart'; // Make sure this file exists and contains UserStore
 
 class ForgotPasswordScreen extends StatefulWidget {
@@ -66,12 +67,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                             });
                           },
                           isVisible: isPasswordVisible,
-                          validator: (v) {
-                            if (v == null || v.length < 6) {
-                              return "Minimum 6 characters";
-                            }
-                            return null;
-                          },
+                          validator: Validators.validatePassword,
                         ),
                         SizedBox(height: 16),
 
